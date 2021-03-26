@@ -1,19 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { Col, Input, Menu, Row } from 'antd';
+import LoginForm from "./LoginForm";
 
 const AppLayout = ({children}) => {
     return (
-        <>
-            <div>
-                <div>
-                    <Link href="/"><a>노드버드</a></Link>
-                    <Link href="/profile"><a>프로필</a></Link>
-                    <Link href="/signup"><a>회원가입</a></Link>
-                </div>
-            </div>
-            {children}
-        </>
+        <div>
+            <Menu mode="horizontal">
+                <Menu.Item key="home"><Link href="/"><a>홈</a></Link></Menu.Item>
+                <Menu.Item key="profile"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
+                <Menu.Item key="mail">
+                    <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
+                </Menu.Item>
+            </Menu>
+            <Row gutter={8}>
+                <Col xs={24} md={6}>
+                    <LoginForm />
+                </Col>
+                <Col xs={24} md={12}>
+                    {children}
+                </Col>
+                <Col xs={24} md={6}>
+                    <a href="#" target="_blank" rel="noreferrer noopener">Made by hyeji</a>
+                </Col>
+            </Row>
+        </div>
     );
 }
 

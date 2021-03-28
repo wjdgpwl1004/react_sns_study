@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Col, Input, Menu, Row } from 'antd';
 import LoginForm from "./LoginForm";
+import UserProfile from "./UserProfile";
 
 const AppLayout = ({children}) => {
     return (
@@ -17,6 +18,7 @@ const AppLayout = ({children}) => {
             <Row gutter={8}>
                 <Col xs={24} md={6}>
                     <LoginForm />
+                    {/*<UserProfile/>*/}
                 </Col>
                 <Col xs={24} md={12}>
                     {children}

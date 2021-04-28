@@ -1,12 +1,12 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User } = require('../models');
-
+const { User, Post } = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err) {
             console.error(err);
@@ -20,12 +20,30 @@ router.post('/login', (req, res, next) => {
                 console.error(loginErr);
                 return next(loginErr);
             }
-            return res.json(user);
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: user.id },
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [{
+                    model: Post,
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id'],
+                }]
+            })
+            return res.status(200).json(fullUserWithoutPassword);
         });
     })(req, res, next);
 });
 
-router.post('/', async (req, res, next) => {//POST /user/
+router.post('/', isNotLoggedIn, async (req, res, next) => {//POST /user/
     try {
         const exUser = await User.findOne({
            where: {
@@ -48,6 +66,12 @@ router.post('/', async (req, res, next) => {//POST /user/
         console.error(error);
         next(error); // status 500
     }
+});
+
+router.post('/logout', isLoggedIn, (req, res) => {
+    req.logout();
+    req.session.destroy();
+    res.send('ok');
 });
 
 module.exports = router;

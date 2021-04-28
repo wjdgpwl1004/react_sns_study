@@ -140,4 +140,3 @@ reactSNS-aws.pem
 node_modules
 .env
 .next
-/back/config/config.json

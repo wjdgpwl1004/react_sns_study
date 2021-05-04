@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';
-import { LOG_IN_REQUEST } from '../reducers/user';
+import { loginRequestAction } from '../reducers/user';
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
@@ -22,17 +22,14 @@ const LoginForm = () => {
     const [password, onChangePassword] = useInput('');
 
     useEffect(() => {
-       if(logInError) {
-           alert(logInError);
-       }
+        if (logInError) {
+            alert(logInError);
+        }
     }, [logInError]);
 
     const onSubmitForm = useCallback(() => {
         console.log(email, password);
-        dispatch({
-            type: LOG_IN_REQUEST,
-            data: { email, password },
-        });
+        dispatch(loginRequestAction({ email, password }));
     }, [email, password]);
 
     return (

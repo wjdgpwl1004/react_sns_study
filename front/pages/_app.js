@@ -22,7 +22,7 @@ App.propTypes = {
 };
 
 export function reportWebVitals(metric) {
-    console.log(metric);
+    // console.log(metric);
 }
 
 export default wrapper.withRedux(withReduxSaga(App));
